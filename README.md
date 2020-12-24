@@ -1,10 +1,12 @@
-"# espnfantasybball" 
+# espnfantasybball
 
-##Example API query
+Simple repo for a smart coach for fantasy basketball.
+
+## Example API query
 https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/<<INSERTLEAGUEID>>?view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav
 
-##Documenting API responses
-###Average Stats
+## Documenting API responses
+### Average Stats
 0 = points
 1 = blocks
 2 = steals
@@ -19,7 +21,7 @@ https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/<<INS
 19 = fg%
 20 = ft%
 
-###schedule
+### Schedule
 	away
 		rosterForCurrentScoringPeriod
 		rosterForMatchupPeriodDelayed
@@ -37,7 +39,7 @@ https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/<<INS
 	playoffTierType
 	winner
 
-###teams
+### Teams
 	"id": int,
 	"nickname": string
 	"draftDayProjectedRank": int
