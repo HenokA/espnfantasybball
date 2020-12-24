@@ -7,19 +7,19 @@ https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/<<INS
 
 ## Documenting API responses
 ### Average Stats
-0 = points
-1 = blocks
-2 = steals
-3 = assist
-6 = rebounds
-11 = Turnovers
-13 = fgm
-14 = fga
-15 = ftm
-16 = fta
-17 = 3pm
-19 = fg%
-20 = ft%
+* 0 = points
+* 1 = blocks
+* 2 = steals
+* 3 = assist
+* 6 = rebounds
+* 11 = Turnovers
+* 13 = fgm
+* 14 = fga
+* 15 = ftm
+* 16 = fta
+* 17 = 3pm
+* 19 = fg%
+* 20 = ft%
 
 ### Schedule
 	away
