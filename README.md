@@ -87,6 +87,7 @@ Name | Description | Value Type | Example
 | `utctm` | UTC Time | _String_ | `"00:00"`
 
 ### Schedule TeamID - to - ESPN Fantasy TeamID Mapping
+
 Schedule Data TeamID |	Team Name | ESPN Fantasy TeamID
 ------------ | ------------ | ------------ | ------------ 
 |1610612737	| Atlanta Hawks	         | 1
