@@ -57,12 +57,39 @@ https://data.nba.com/data/10s/v2015/json/mobile_teams/nba/{YEAR}/league/00_full_
     ...
                
 
+### Schedule JSON Breakdown
 
+Name | Description | Value Type | Example
+------------ | ------------ | ------------ | ------------ 
+| `lscd` | League Schedule | _Array of JSON Objects_ | 
+| `mscd` | Month Schedule | _Array of JSON Objects_ |
+| `mon` | Month | _String_ | `"June"`
+| `g` | Games | _Array of JSON Objects_ |
+| `gid` | Game ID | _String_ | `"0041500407"`
+| `gcode` | Game Code | _String_ | `"20160619/CLEGSW"`
+| `seri` | Playoff Series Summary | _String_ | `"CLE wins series 4-3"`
+| `gdte` | Game Date | _String_ | `"2016-06-19"`
+| `an` | Arena | _String_ | `"ORACLE Arena"`
+| `ac` | Arena City | _String_ | `"Oakland"`
+| `as` | Arena State | _String_ | `"CA"`
+| `stt` | Game Status | _String_ | `"Final"`
+| `bd` | Broadcast Information | _JSON Object_ |
+| `b` | Broadcasters | _Array of JSON Objects_ |
+| `v` | Visiting Team Information | _JSON Object_ |
+| `h` | Home Team Information | _JSON Object_ | 
+| `tid` | Team ID | _Integer_ | `1610612739`
+| `re` | W-L Record | _String_ | `"16-5"`
+| `ta` | Team Abbreviation | _String_ | `"CLE"`
+| `tn` | Team Name | _String_ | `"Cavaliers"`
+| `tc` | Team City | _String_ | `"Cleveland"`
+| `s` | Team Score | _String_ | `"93"`
+| `gdtutc` | Game Date UTC | _String_ | `"2016-06-20"`
+| `utctm` | UTC Time | _String_ | `"00:00"`
 
 ### Schedule TeamID - to - ESPN Fantasy TeamID Mapping
 
-| Schedule Data TeamID | Team Name | ESPN Fantasy TeamID 
-| ------------ | ------------ | ------------ | ------------
+ Schedule Data TeamID | Team Name | ESPN Fantasy TeamID 
+ ------------ | ------------ | ------------ | ------------
 | 1610612737	| Atlanta Hawks	         | 1
 | 1610612738	| Boston Celtics	     | 2
 | 1610612740	| New Orleans Pelicans	 | 3
