@@ -5,9 +5,9 @@ import urllib, json
 
 
 def teamDictionaryGenerator():
-    for team in data_leagueTeams:
+    for team in fantasyData_leagueTeams:
         leagueTeams[team["id"]] = team
-    for member in data_leagueMembers:
+    for member in fantasyData_leagueMembers:
         members[member["id"]] = member
 
 def findMatchup ():
@@ -46,22 +46,44 @@ def parseInput(inputVal):
         print("computing Trade matchup")
 
 def getAPIResponse():
-    data = json.load(f)
+    fantasyData = json.load(f)
     url = "https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/68361879?view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav"
     response = requests.get(url,
                  cookies={"swid": "{SWID-COOKIE-HERE}",
                           "espn_s2": "LONG_ESPN_S2_COOKIE_HERE"})
-    data = json.loads(response.read())
+    fantasyData = json.loads(response.read())
+
+def parseSchedule():
+    for month in scheduleData["lscd"]:
+        for game in month["mscd"]["g"]:
+            team = str(game["v"]["tid"])+","+game["v"]["tc"]+" "+game["v"]["tn"]
+            nbateams.append(team)
+            team = str(game["h"]["tid"])+","+game["h"]["tc"]+" "+game["h"]["tn"]
+            nbateams.append(team)
+    print(nbateams)
+
+def parseTeams():
+    for team in fantasyData_leagueTeams:
+        for player in team["roster"]["entries"]
+            
 
 # Output: {'name': 'Bob', 'languages': ['English', 'Fench']}
-# print(data["draftDetail"])
+# print(fantasyData["draftDetail"])
 #League starts week 52 of 2020
-with open(r"C:\Users\headdis\Documents\nbatestjson.json") as f:
-  data = json.load(f)
+with open(r"C:\Users\headdis\Code\espnfantasybball\nbatestjson.json") as f:
+  fantasyData = json.load(f)
 
-leagueSchedule = data["schedule"]
-data_leagueTeams = data["teams"]
-data_leagueMembers = data["members"]
+with open(r"C:\Users\headdis\Code\espnfantasybball\nbaschedule.json") as f:
+  scheduleData = json.load(f)
+
+leagueSchedule = fantasyData["schedule"]
+fantasyData_leagueTeams = fantasyData["teams"]
+fantasyData_leagueMembers = fantasyData["members"]
+
+nbateams = []
+
+testteams = []
+
 leagueTeams = {}
 members = {}
 mySchedule = []
@@ -70,4 +92,5 @@ leagueBeginning = datetime.strptime('22 Dec 2020', '%d %b %Y')
 teamNumber = int(input (" Input team number: "))
 test_text = int(input ("\n Find Opponent        = 1\n Run H2H Analysis     = 2\n Trade Evaluation     = 3\n Waiver Wire Analysis = 4\n\n"))
 
-parseInput(test_text)
+#parseInput(test_text)
+parseSchedule()
