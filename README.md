@@ -89,37 +89,37 @@ Name | Description | Value Type | Example
 ### Schedule TeamID - to - ESPN Fantasy TeamID Mapping
 
 | Schedule Data TeamID | Team Name | ESPN Fantasy TeamID |
------------- | ------------ | ------------ | ------------ 
-| 1610612737	| Atlanta Hawks	         | 1
-| 1610612738	| Boston Celtics	     | 2
-| 1610612740	| New Orleans Pelicans	 | 3
-| 1610612741	| Chicago Bulls	         | 4
-| 1610612739	| Cleveland Cavaliers	 | 5
-| 1610612742	| Dallas Mavericks   	 | 6
-| 1610612743	| Denver Nuggets    	 | 7
-| 1610612765	| Detroit Pistons	     | 8
-| 1610612744	| Golden State Warriors	 | 9
-| 1610612745	| Houston Rockets	     | 10
-| 1610612754	| Indiana Pacers	     | 11
-| 1610612746	| LA Clippers	         | 12
-| 1610612747	| Los Angeles Lakers	 | 13
-| 1610612748	| Miami Heat	         | 14
-| 1610612749	| Milwaukee Bucks	     | 15
-| 1610612750	| Minnesota Timberwolves | 16
-| 1610612751	| Brooklyn Nets	         | 17
-| 1610612752	| New York Knicks	     | 18
-| 1610612753	| Orlando Magic	         | 19
-| 1610612755	| Philadelphia 76ers	 | 20
-| 1610612756	| Phoenix Suns	         | 21
-| 1610612757	| Portland Trail Blazers | 22
-| 1610612758	| Sacramento Kings	     | 23
-| 1610612759	| San Antonio Spurs	     | 24
-| 1610612760	| Oklahoma City Thunder	 | 25
-| 1610612762	| Utah Jazz	             | 26
-| 1610612764	| Washington Wizards	 | 27
-| 1610612761	| Toronto Raptors	     | 28
-| 1610612763	| Memphis Grizzlies	     | 29
-| 1610612766	| Charlotte Hornets	     | 30
+------------ | ------------ | ------------ | ------------|
+| 1610612737	| Atlanta Hawks	         | 1  |
+| 1610612738	| Boston Celtics	     | 2 |
+| 1610612740	| New Orleans Pelicans	 | 3 |
+| 1610612741	| Chicago Bulls	         | 4 |
+| 1610612739	| Cleveland Cavaliers	 | 5 |
+| 1610612742	| Dallas Mavericks   	 | 6 |
+| 1610612743	| Denver Nuggets    	 | 7 |
+| 1610612765	| Detroit Pistons	     | 8 |
+| 1610612744	| Golden State Warriors	 | 9 |
+| 1610612745	| Houston Rockets	     | 10 |
+| 1610612754	| Indiana Pacers	     | 11 |
+| 1610612746	| LA Clippers	         | 12 |
+| 1610612747	| Los Angeles Lakers	 | 13 |
+| 1610612748	| Miami Heat	         | 14 |
+| 1610612749	| Milwaukee Bucks	     | 15 |
+| 1610612750	| Minnesota Timberwolves | 16 |
+| 1610612751	| Brooklyn Nets	         | 17 |
+| 1610612752	| New York Knicks	     | 18 |
+| 1610612753	| Orlando Magic	         | 19 |
+| 1610612755	| Philadelphia 76ers	 | 20 |
+| 1610612756	| Phoenix Suns	         | 21 |
+| 1610612757	| Portland Trail Blazers | 22 |
+| 1610612758	| Sacramento Kings	     | 23 |
+| 1610612759	| San Antonio Spurs	     | 24 |
+| 1610612760	| Oklahoma City Thunder	 | 25 |
+| 1610612762	| Utah Jazz	             | 26 |
+| 1610612764	| Washington Wizards	 | 27 |
+| 1610612761	| Toronto Raptors	     | 28 |
+| 1610612763	| Memphis Grizzlies	     | 29 |
+| 1610612766	| Charlotte Hornets	     | 30 |
 
 
 ## Fantasy API Documentation
