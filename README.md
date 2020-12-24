@@ -88,7 +88,7 @@ Name | Description | Value Type | Example
 
 ### Schedule TeamID - to - ESPN Fantasy TeamID Mapping
 
-Schedule Data TeamID |	Team Name | ESPN Fantasy TeamID
+| Schedule Data TeamID | Team Name | ESPN Fantasy TeamID |
 ------------ | ------------ | ------------ | ------------ 
 | 1610612737	| Atlanta Hawks	         | 1
 | 1610612738	| Boston Celtics	     | 2
