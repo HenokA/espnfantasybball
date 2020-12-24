@@ -1,9 +1,8 @@
 import json
 import datetime
 from datetime import datetime
-#League starts week 52 of 2020
-with open(r"C:\Users\headdis\Documents\nbatestjson.json") as f:
-  data = json.load(f)
+import urllib, json
+
 
 def teamDictionaryGenerator():
     for team in data_leagueTeams:
@@ -46,8 +45,19 @@ def parseInput(inputVal):
     elif inputVal == 3:
         print("computing Trade matchup")
 
+def getAPIResponse():
+    data = json.load(f)
+    url = "https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/68361879?view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav"
+    response = requests.get(url,
+                 cookies={"swid": "{SWID-COOKIE-HERE}",
+                          "espn_s2": "LONG_ESPN_S2_COOKIE_HERE"})
+    data = json.loads(response.read())
+
 # Output: {'name': 'Bob', 'languages': ['English', 'Fench']}
 # print(data["draftDetail"])
+#League starts week 52 of 2020
+with open(r"C:\Users\headdis\Documents\nbatestjson.json") as f:
+  data = json.load(f)
 
 leagueSchedule = data["schedule"]
 data_leagueTeams = data["teams"]
