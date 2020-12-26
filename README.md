@@ -124,6 +124,18 @@ Name | Description | Value Type | Example
 
 ## Fantasy API Documentation
 
+### Making automated calls to API
+Information pulled from this Fantasy Football writeup: https://stmorse.github.io/journal/espn-fantasy-v3.html
+
+We can modify our GET request from before to:
+
+r = requests.get(url,
+                 cookies={"swid": "{SWID-COOKIE-HERE}",
+                          "espn_s2": "LONG_ESPN_S2_COOKIE_HERE"})
+I saw that the SWID and the ESPN_S2 cookies were the magic tickets based on the similar coding endeavors here and here and here.
+
+You can find these cookies in Safari by opening the Storage tab of Developer tools (you can turn on developer tools in Preferences), and look under espn.com in the Cookies folder. In Chrome, you can go to Preferences -> Advanced -> Content Settings -> Cookies -> See all cookies and site data, and look for ESPN.
+
 ### Schedule
 	away
 		rosterForCurrentScoringPeriod

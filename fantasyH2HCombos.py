@@ -10,7 +10,10 @@ def teamDictionaryGenerator():
     for member in fantasyData_leagueMembers:
         members[member["id"]] = member
 
-def findMatchup ():
+def playerLookup():
+
+def teamLookup (teamLabel):
+    print("Schedule & Team Info for Team ", teamLabel, " - " + leagueTeams[teamLabel]["location"] + " " +leagueTeams[teamLabel]["nickname"], " - " + members[leagueTeams[teamLabel]["owners"][0]]["firstName"] +" "+ members[leagueTeams[teamLabel]["owners"][0]]["lastName"], "\n")
     my_date = datetime.today()
     year, week_num, day_of_week = my_date.isocalendar()
     lS_year, lS_week_num, lS_day_of_week = leagueBeginning.isocalendar()
@@ -19,7 +22,7 @@ def findMatchup ():
     leagueWeek = week_num - lS_week_num +1 #positive number means 2021
     for matchup in leagueSchedule:
         tempUse = {}
-        if matchup["away"]["teamId"] == teamNumber:
+        if matchup["away"]["teamId"] == teamLabel:
             opponentTeamId = int(matchup["home"]["teamId"])
             tempUse["teamId"] = opponentTeamId
             tempUse["matchupWeek"] = int(matchup["matchupPeriodId"]) - leagueWeek
@@ -27,7 +30,7 @@ def findMatchup ():
             tempUse["opponentTeam"] = leagueTeams[opponentTeamId]["nickname"]
             mySchedule.append(tempUse)
             print(tempUse)
-        elif matchup["home"]["teamId"] == teamNumber:
+        elif matchup["home"]["teamId"] == teamLabel:
             opponentTeamId = int(matchup["away"]["teamId"])
             tempUse["teamId"] = opponentTeamId
             tempUse["matchupWeek"] = int(matchup["matchupPeriodId"]) - leagueWeek
@@ -38,8 +41,11 @@ def findMatchup ():
 
 def parseInput(inputVal):
     if inputVal == 1:
-        findMatchup()
+        teamLabel=int(input ("\n What team should I lookup? = "))
+        teamLookup(teamLabel)
         print("done collecting schedule...\n")
+        for player in teamMapping[teamLabel]:
+            print(player)
     elif inputVal == 2:
         print("computing H2H matchup")
     elif inputVal == 3:
@@ -86,27 +92,21 @@ with open(r"C:\Users\headdis\Code\espnfantasybball\nbatestjson.json") as f:
 with open(r"C:\Users\headdis\Code\espnfantasybball\nbaschedule.json") as f:
   scheduleData = json.load(f)
 
+#initial variables set
 leagueSchedule = fantasyData["schedule"]
 fantasyData_leagueTeams = fantasyData["teams"]
 fantasyData_leagueMembers = fantasyData["members"]
-
 nbateams = []
-
 testteams = []
-
 leagueTeams = {}
 members = {}
 mySchedule = []
+#builds initial team data
 teamDictionaryGenerator()
 leagueBeginning = datetime.strptime('22 Dec 2020', '%d %b %Y')
 
 #gets user schedules
-teamNumber = int(input (" Input team number: "))
 parseSchedule()
-
-#further options
-test_text = int(input ("\n Find Opponent        = 1\n Run H2H Analysis     = 2\n Trade Evaluation     = 3\n Waiver Wire Analysis = 4\n\n"))
-parseInput(test_text)
 
 #dict for team lookup
 teamMapping = {}
@@ -114,5 +114,7 @@ teamMapping = {}
 playerMapping = {}
 parseTeams()
 
-for player in teamMapping[13]:
-    print(player)
+#further options
+test_text = int(input ("\n Team Lookup          = 1\n Run H2H Analysis     = 2\n Trade Evaluation     = 3\n Waiver Wire Analysis = 4\n\n"))
+parseInput(test_text)
+#print(leagueTeams[13])
