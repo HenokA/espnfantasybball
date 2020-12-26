@@ -123,20 +123,6 @@ Name | Description | Value Type | Example
 
 
 ## Fantasy API Documentation
-### Average Stats
-* 0 = points
-* 1 = blocks
-* 2 = steals
-* 3 = assist
-* 6 = rebounds
-* 11 = Turnovers
-* 13 = fgm
-* 14 = fga
-* 15 = ftm
-* 16 = fta
-* 17 = 3pm
-* 19 = fg%
-* 20 = ft%
 
 ### Schedule
 	away
@@ -177,6 +163,18 @@ Name | Description | Value Type | Example
 						2 - 2020 season
 						3 - 2021 season (??)
 						4 - 2021 projections					
-			
-			
+### Average Stats (under teams > roster > player)
+* 0 = points
+* 1 = blocks
+* 2 = steals
+* 3 = assist
+* 6 = rebounds
+* 11 = Turnovers
+* 13 = fgm
+* 14 = fga
+* 15 = ftm
+* 16 = fta
+* 17 = 3pm
+* 19 = fg%
+* 20 = ft%
 

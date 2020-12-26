@@ -14,7 +14,7 @@ def findMatchup ():
     my_date = datetime.today()
     year, week_num, day_of_week = my_date.isocalendar()
     lS_year, lS_week_num, lS_day_of_week = leagueBeginning.isocalendar()
-    if week_num < 52: 
+    if week_num < 52:
         week_num += 53
     leagueWeek = week_num - lS_week_num +1 #positive number means 2021
     for matchup in leagueSchedule:
@@ -60,13 +60,23 @@ def parseSchedule():
             nbateams.append(team)
             team = str(game["h"]["tid"])+","+game["h"]["tc"]+" "+game["h"]["tn"]
             nbateams.append(team)
-    print(nbateams)
+    #print(nbateams)
 
 def parseTeams():
     for team in fantasyData_leagueTeams:
-        for player in team["roster"]["entries"]
-            
-
+        tempTeam = {}
+        #print(team["roster"]["entries"][0].items())
+        for player in team["roster"]["entries"]:
+            tempPlayer = {}
+            tempPlayer["name"] = player["playerPoolEntry"]["player"]["fullName"]
+            tempPlayer["nbaTeam"] = player["playerPoolEntry"]["player"]["proTeamId"]
+            tempPlayer["eligibleSlots"] = player["playerPoolEntry"]["player"]["eligibleSlots"]
+            tempPlayer["stats"] = player["playerPoolEntry"]["player"]["stats"]
+            tempPlayer["fantasyTeamID"] = team["id"]
+            tempTeam[tempPlayer["name"]] = tempPlayer
+            playerMapping[tempPlayer["name"]] = tempPlayer
+        teamMapping[team["id"]] = tempTeam
+    
 # Output: {'name': 'Bob', 'languages': ['English', 'Fench']}
 # print(fantasyData["draftDetail"])
 #League starts week 52 of 2020
@@ -89,8 +99,20 @@ members = {}
 mySchedule = []
 teamDictionaryGenerator()
 leagueBeginning = datetime.strptime('22 Dec 2020', '%d %b %Y')
-teamNumber = int(input (" Input team number: "))
-test_text = int(input ("\n Find Opponent        = 1\n Run H2H Analysis     = 2\n Trade Evaluation     = 3\n Waiver Wire Analysis = 4\n\n"))
 
-#parseInput(test_text)
+#gets user schedules
+teamNumber = int(input (" Input team number: "))
 parseSchedule()
+
+#further options
+test_text = int(input ("\n Find Opponent        = 1\n Run H2H Analysis     = 2\n Trade Evaluation     = 3\n Waiver Wire Analysis = 4\n\n"))
+parseInput(test_text)
+
+#dict for team lookup
+teamMapping = {}
+#dict for player lookup
+playerMapping = {}
+parseTeams()
+
+for player in teamMapping[13]:
+    print(player)
