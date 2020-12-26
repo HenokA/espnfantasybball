@@ -3,14 +3,14 @@ import datetime
 from datetime import datetime
 import urllib, json
 
-
 def teamDictionaryGenerator():
     for team in fantasyData_leagueTeams:
         leagueTeams[team["id"]] = team
     for member in fantasyData_leagueMembers:
         members[member["id"]] = member
 
-def playerLookup():
+def playerLookup(playerName):
+    print(playerMapping[playerName])
 
 def teamLookup (teamLabel):
     print("Schedule & Team Info for Team ", teamLabel, " - " + leagueTeams[teamLabel]["location"] + " " +leagueTeams[teamLabel]["nickname"], " - " + members[leagueTeams[teamLabel]["owners"][0]]["firstName"] +" "+ members[leagueTeams[teamLabel]["owners"][0]]["lastName"], "\n")
@@ -39,18 +39,7 @@ def teamLookup (teamLabel):
             mySchedule.append(tempUse)
             print(tempUse)
 
-def parseInput(inputVal):
-    if inputVal == 1:
-        teamLabel=int(input ("\n What team should I lookup? = "))
-        teamLookup(teamLabel)
-        print("done collecting schedule...\n")
-        for player in teamMapping[teamLabel]:
-            print(player)
-    elif inputVal == 2:
-        print("computing H2H matchup")
-    elif inputVal == 3:
-        print("computing Trade matchup")
-
+#This function calls the url to update the JSON of Fantasy info
 def getAPIResponse():
     fantasyData = json.load(f)
     url = "https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/68361879?view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav"
@@ -59,6 +48,7 @@ def getAPIResponse():
                           "espn_s2": "LONG_ESPN_S2_COOKIE_HERE"})
     fantasyData = json.loads(response.read())
 
+#This function parses the input Schedule JSON to understand the NBA Schedule
 def parseSchedule():
     for month in scheduleData["lscd"]:
         for game in month["mscd"]["g"]:
@@ -68,6 +58,7 @@ def parseSchedule():
             nbateams.append(team)
     #print(nbateams)
 
+#This function goes through each Fantasy team and builds team:roster mappings & a general player Dictionary
 def parseTeams():
     for team in fantasyData_leagueTeams:
         tempTeam = {}
@@ -82,9 +73,22 @@ def parseTeams():
             tempTeam[tempPlayer["name"]] = tempPlayer
             playerMapping[tempPlayer["name"]] = tempPlayer
         teamMapping[team["id"]] = tempTeam
-    
-# Output: {'name': 'Bob', 'languages': ['English', 'Fench']}
-# print(fantasyData["draftDetail"])
+
+#This is the main function that understands user input.
+def parseInput(inputVal):
+    if inputVal == 1:
+        teamLabel=int(input ("\n What team should I lookup? = "))
+        teamLookup(teamLabel)
+        print("done collecting schedule...\n")
+        for player in teamMapping[teamLabel]:
+            print(player)
+    elif inputVal == 2:
+        playerName =input ("\n What player should I lookup? = ")
+        playerLookup(playerName)
+    elif inputVal == 3:
+        print("computing H2H matchup")
+    elif inputVal == 4:
+        print("computing Trade matchup")   
 #League starts week 52 of 2020
 with open(r"C:\Users\headdis\Code\espnfantasybball\nbatestjson.json") as f:
   fantasyData = json.load(f)
@@ -115,6 +119,5 @@ playerMapping = {}
 parseTeams()
 
 #further options
-test_text = int(input ("\n Team Lookup          = 1\n Run H2H Analysis     = 2\n Trade Evaluation     = 3\n Waiver Wire Analysis = 4\n\n"))
+test_text = int(input ("\n Team Lookup          = 1\n Player Lookup        = 2\n Run H2H Analysis     = 3\n Trade Evaluation     = 4\n Waiver Wire Analysis = 5\n\n"))
 parseInput(test_text)
-#print(leagueTeams[13])
