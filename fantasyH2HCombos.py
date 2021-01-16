@@ -130,6 +130,10 @@ def gamesPerWeek(nbaTeam, fantasyWeek):
             countGames += 1
     return countGames
 
+def teamCombos(){
+    
+}
+
 #This is the main function that understands user input.
 def parseInput(inputVal):
     if inputVal == 1:
