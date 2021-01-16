@@ -169,12 +169,12 @@ You can find these cookies in Safari by opening the Storage tab of Developer too
                                 	"injuryStatus": string ("ACTIVE")
 					"proTeamId": int (team name)
 					"stats": array of objects
-						0 - 2021 season
+						0 - Last 7 days of current season
 							"averageStats": object (see averageStats breakdown)
-						1 - 2021 season (??)
+						1 - Last 15 days of current season
 						2 - 2020 season
-						3 - 2021 season (??)
-						4 - 2021 projections					
+						3 - Full stats current season 
+						4 - Projections of current season					
 ### Average Stats (under teams > roster > player)
 * 0 = points
 * 1 = blocks

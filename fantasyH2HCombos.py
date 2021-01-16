@@ -12,14 +12,10 @@ def teamDictionaryGenerator():
     for member in fantasyData_leagueMembers:
         members[member["id"]] = member
 
-def playerLookup(playerName):
+def playerLookup(playerName, statType = 4):
     if bool(playerMapping[playerName]["stats"]):
-        for stat in playerMapping[playerName]["stats"]:
-            print(stat, "\n")
-        # projected2021Stats = playerMapping[playerName]["stats"][4]
-        # y2021Stats = playerMapping[playerName]["stats"][0]
-        # y2020Stats = playerMapping[playerName]["stats"][2]
-        # print(projected2021Stats)
+        for stat in playerMapping[playerName]["stats"][statType-1]:
+            print(stat, "=", playerMapping["Kyrie Irving"]["stats"][statType-1][stat], "\n")
 
 #Looks up matchups for a given teamId
 def matchUpLookUp (teamLabel):
@@ -55,6 +51,9 @@ def getAPIResponse():
     response = requests.get(url,
                  cookies={"swid": espnAuth["swid"],
                           "espn_s2": espnAuth["espn_s2"]})
+    file = open("sample.txt", "w")
+    file.write(str(response.json()) + "\n")
+
     return response.json()
 
 #This function parses the input Schedule JSON to understand the NBA Schedule
@@ -74,16 +73,18 @@ def parseSchedule():
                         fantasyWeeks[key]["games"].append(nbaGame) 
     #print(fantasyWeeks[1]["games"])
 
-#This function goes through each Fantasy team and builds team:roster mappings & a general player Dictionary
+# This function goes through each Fantasy team and builds team:roster mappings & a general player Dictionary
+# output = teamMapping
 def parseTeams():
     for team in fantasyData_leagueTeams:
         tempTeam = {}
-        #print(team["roster"]["entries"][0].items())
         for player in team["roster"]["entries"]:
             tempPlayer = {}
             tempPlayer["name"] = player["playerPoolEntry"]["player"]["fullName"]
             tempPlayer["nbaTeam"] = player["playerPoolEntry"]["player"]["proTeamId"]
             tempPlayer["eligibleSlots"] = player["playerPoolEntry"]["player"]["eligibleSlots"]
+            tempPlayer["injured"] = player["playerPoolEntry"]["player"]["injured"]
+            tempPlayer["injuryStatus"] = player["playerPoolEntry"]["player"]["injuryStatus"]
             tempPlayer["stats"] = remapStats(player["playerPoolEntry"]["player"]["stats"])
             tempPlayer["ownership"] = player["playerPoolEntry"]["player"]["ownership"]
             tempPlayer["fantasyTeamID"] = team["id"]
@@ -91,11 +92,11 @@ def parseTeams():
             playerMapping[tempPlayer["name"]] = tempPlayer
         teamMapping[team["id"]] = tempTeam
 
-#Remaps the ambiguous keyValues for playerStats into readable form
+# Remaps the ambiguous keyValues for playerStats into readable form
+# output = playerMapping table
 def remapStats(stats):
     remappedStats = []
-    toCheck = [4, 5]
-    #print(stats[4]["averageStats"].keys())
+    toCheck = [0, 1, 2, 3, 4] #this pulls 7d, 15d, 2020, 2021, and 2021p stats respectively
     statMapping = {"0":"points","1":"blocks", "2":"steals", "3":"assist",
         "6":"rebounds", "11":"Turnovers", "13":"fgm", "14":"fga", "15":"ftm",
         "16":"fta", "17":"threePM", "19":"fg%", "20":"ft%"}
@@ -130,9 +131,12 @@ def gamesPerWeek(nbaTeam, fantasyWeek):
             countGames += 1
     return countGames
 
-def teamCombos(){
-    
-}
+def teamCombos():
+    print(teamMapping[13]["Kyrie Irving"], "\n")
+
+    for stat in playerMapping["Kyrie Irving"]["stats"]:
+        print(stat, "\n")
+
 
 #This is the main function that understands user input.
 def parseInput(inputVal):
@@ -145,11 +149,13 @@ def parseInput(inputVal):
             print(teamMapping[teamLabel][player]["name"], ", ", gamesPerWeek(teamMapping[teamLabel][player]["nbaTeam"], 1))
     elif inputVal == 2:
         playerName =input ("\n What player should I lookup? = ")
-        playerLookup(playerName)
+        statType =input ("\n What stat should we look up? \n 1 = 7d \n 2 = 15d \n 3 = 2020 stats \n 4 = 2021 stats \n 5 = 2021 predions\n")
+        playerLookup(playerName, statType=4)
     elif inputVal == 3:
         print("computing H2H matchup")
         gamesThisWeek()
     elif inputVal == 4:
+        teamCombos()
         print("computing Trade matchup")   
 #League starts week 52 of 2020
 
