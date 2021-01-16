@@ -1,4 +1,5 @@
 import json
+import requests
 import datetime
 from datetime import datetime
 import urllib, json
@@ -41,12 +42,11 @@ def teamLookup (teamLabel):
 
 #This function calls the url to update the JSON of Fantasy info
 def getAPIResponse():
-    fantasyData = json.load(f)
     url = "https://fantasy.espn.com/apis/v3/games/fba/seasons/2021/segments/0/leagues/68361879?view=mLiveScoring&view=mMatchupScore&view=mPendingTransactions&view=mPositionalRatings&view=mRoster&view=mSettings&view=mTeam&view=modular&view=mNav"
     response = requests.get(url,
-                 cookies={"swid": "{SWID-COOKIE-HERE}",
-                          "espn_s2": "LONG_ESPN_S2_COOKIE_HERE"})
-    fantasyData = json.loads(response.read())
+                 cookies={"swid": espnAuth["swid"],
+                          "espn_s2": espnAuth["espn_s2"]})
+    return response.json()
 
 #This function parses the input Schedule JSON to understand the NBA Schedule
 def parseSchedule():
@@ -90,11 +90,19 @@ def parseInput(inputVal):
     elif inputVal == 4:
         print("computing Trade matchup")   
 #League starts week 52 of 2020
-with open(r"C:\Users\headdis\Code\espnfantasybball\nbatestjson.json") as f:
-  fantasyData = json.load(f)
 
-with open(r"C:\Users\headdis\Code\espnfantasybball\nbaschedule.json") as f:
+with open(r"C:\Users\Henok Addis\Documents\espn_auth.json") as f:
+  espnAuth = json.load(f) 
+
+fantasyData = getAPIResponse()
+
+leagueSchedule = fantasyData["schedule"]
+#with open(r"C:\Users\Henok Addis\Code\espnfantasybball\nbatestjson.json") as f:
+#  fantasyData = json.load(f)
+
+with open(r"C:\Users\Henok Addis\Code\espnfantasybball\nbaschedule.json") as f:
   scheduleData = json.load(f)
+
 
 #initial variables set
 leagueSchedule = fantasyData["schedule"]
