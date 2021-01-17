@@ -4,7 +4,9 @@ import datetime
 from datetime import datetime
 import urllib, json
 import csv
+import itertools
 from itertools import combinations 
+
 
 def teamDictionaryGenerator():
     for team in fantasyData_leagueTeams:
@@ -82,7 +84,17 @@ def parseTeams():
             tempPlayer = {}
             tempPlayer["name"] = player["playerPoolEntry"]["player"]["fullName"]
             tempPlayer["nbaTeam"] = player["playerPoolEntry"]["player"]["proTeamId"]
-            tempPlayer["eligibleSlots"] = player["playerPoolEntry"]["player"]["eligibleSlots"]
+            #tempPlayer["eligibleSlots"] = player["playerPoolEntry"]["player"]["eligibleSlots"]
+            tempSlots = []
+            guaranteedSlots = [7,8,9,10,11,12,13]
+            for slot in player["playerPoolEntry"]["player"]["eligibleSlots"]:
+                if slot < 7:
+                    tempSlots.append(slot)
+                else:
+                    for item in guaranteedSlots:
+                        tempSlots.append(item)
+                    break
+            tempPlayer["eligibleSlots"] = tempSlots
             tempPlayer["injured"] = player["playerPoolEntry"]["player"]["injured"]
             tempPlayer["injuryStatus"] = player["playerPoolEntry"]["player"]["injuryStatus"]
             tempPlayer["stats"] = remapStats(player["playerPoolEntry"]["player"]["stats"])
@@ -131,12 +143,39 @@ def gamesPerWeek(nbaTeam, fantasyWeek):
             countGames += 1
     return countGames
 
-def teamCombos():
-    print(teamMapping[13]["Kyrie Irving"], "\n")
+#defines the combinations for a teams players across all eligable slots.
+#teamMapping has injury reports; playerMapping has playerStats
+def teamCombos(team1, team2):
+    team1Slots = {"0": [], "1":[],"2":[],"3":[],"4":[],"5":[],"6":[],"7":[],"8":[],"9":[],"10":[],"11":[],"12":[],"13":[]}
+    team2Slots = {"0": [], "1":[],"2":[],"3":[],"4":[],"5":[],"6":[],"7":[],"8":[],"9":[],"10":[],"11":[],"12":[],"13":[]}
+    for player in teamMapping[team1]:
+        print(teamMapping[team1][player]["name"], "\n")
+        if(teamMapping[team1][player]["injured"] == "True"):
+            for slot in [10,11,12,13]:
+                tempList = {"name": teamMapping[team1][player]["name"], "stats": teamMapping[team1][player]["stats"], "injuryStatus": teamMapping[team1][player]["injuryStatus"]}
+                team1Slots[str(slot)].append(tempList)
+        else:
+            for slot in teamMapping[team1][player]["eligibleSlots"]:
+                tempList = {"name": teamMapping[team1][player]["name"], "stats": teamMapping[team1][player]["stats"], "injuryStatus": teamMapping[team1][player]["injuryStatus"]}
+                team1Slots[str(slot)].append(tempList)
+        
+    combinations = list(itertools.product(team1Slots["0"],team1Slots["1"],team1Slots["2"],team1Slots["3"],
+                        team1Slots["4"],team1Slots["5"],team1Slots["6"],team1Slots["7"],team1Slots["8"],team1Slots["9"],
+                        team1Slots["10"],team1Slots["11"],team1Slots["12"],team1Slots["13"]))
+    print(combinations)
 
-    for stat in playerMapping["Kyrie Irving"]["stats"]:
-        print(stat, "\n")
+    # for slot in team1Slots:
+    #     for sloty in team1Slots[slot]:
+    #         print(slot, " = ", sloty["name"])
 
+        # a = [1,2,3]
+        # b = [4,5]
+        # c = [-1]
+        # # result contains all possible combinations.
+        # combinations = list(itertools.product(a,b,c))
+    
+    # for stat in playerMapping["Kyrie Irving"]["stats"]:
+    #     print(stat, "\n")
 
 #This is the main function that understands user input.
 def parseInput(inputVal):
@@ -146,16 +185,18 @@ def parseInput(inputVal):
         print("done collecting schedule...\n  ")#, teamMapping[teamLabel])
         #print(fantasyWeeks[1]["games"])
         for player in teamMapping[teamLabel]:
-            print(teamMapping[teamLabel][player]["name"], ", ", gamesPerWeek(teamMapping[teamLabel][player]["nbaTeam"], 1))
+            print(teamMapping[teamLabel][player]["name"], ", ", gamesPerWeek(teamMapping[teamLabel][player]["nbaTeam"], 1), ", ", teamMapping[teamLabel][player]["eligibleSlots"])
     elif inputVal == 2:
         playerName =input ("\n What player should I lookup? = ")
         statType =input ("\n What stat should we look up? \n 1 = 7d \n 2 = 15d \n 3 = 2020 stats \n 4 = 2021 stats \n 5 = 2021 predions\n")
         playerLookup(playerName, statType=4)
     elif inputVal == 3:
-        print("computing H2H matchup")
-        gamesThisWeek()
+        team1 =int(input ("\n Team 1 = "))
+        team2 =int(input ("\n Team 2 = "))
+        print("\ncomputing H2H matchup\n")
+        teamCombos(team1, team2)
     elif inputVal == 4:
-        teamCombos()
+        
         print("computing Trade matchup")   
 #League starts week 52 of 2020
 
@@ -171,6 +212,7 @@ leagueSchedule = fantasyData["schedule"]
 with open(r"C:\Users\Henok Addis\Code\espnfantasybball\nbaschedule.json") as f:
   scheduleData = json.load(f)
 
+lockedRoster = ["Giannis Antetokounmpo", "Bradley Beal", "Domantas Sabonis", "Steven Adams"]
 
 #initial variables set
 leagueSchedule = fantasyData["schedule"]
