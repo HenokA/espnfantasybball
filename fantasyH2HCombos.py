@@ -110,7 +110,7 @@ def remapStats(stats):
     remappedStats = []
     toCheck = [0, 1, 2, 3, 4] #this pulls 7d, 15d, 2020, 2021, and 2021p stats respectively
     statMapping = {"0":"points","1":"blocks", "2":"steals", "3":"assist",
-        "6":"rebounds", "11":"Turnovers", "13":"fgm", "14":"fga", "15":"ftm",
+        "6":"rebounds", "11":"turnovers", "13":"fgm", "14":"fga", "15":"ftm",
         "16":"fta", "17":"threePM", "19":"fg%", "20":"ft%"}
     for index in toCheck:
         tempStat = {}
@@ -143,14 +143,26 @@ def gamesPerWeek(nbaTeam, fantasyWeek):
             countGames += 1
     return countGames
 
+
+def sort_and_deduplicate(l):
+    return list(uniq(l))
+
+def uniq(lst):
+    last = object()
+    for item in lst:
+        if item == last:
+            continue
+        yield item
+        last = item
+
+
 #defines the combinations for a teams players across all eligable slots.
 #teamMapping has injury reports; playerMapping has playerStats
 def teamCombos(team1, team2):
     team1Slots = {"0": [], "1":[],"2":[],"3":[],"4":[],"5":[],"6":[],"7":[],"8":[],"9":[],"10":[],"11":[],"12":[],"13":[]}
     team2Slots = {"0": [], "1":[],"2":[],"3":[],"4":[],"5":[],"6":[],"7":[],"8":[],"9":[],"10":[],"11":[],"12":[],"13":[]}
     for player in teamMapping[team1]:
-        print(teamMapping[team1][player]["name"], "\n")
-        if(teamMapping[team1][player]["injured"] == "True"):
+        if(teamMapping[team1][player]["injured"] == True):
             for slot in [10,11,12,13]:
                 tempList = {"name": teamMapping[team1][player]["name"], "stats": teamMapping[team1][player]["stats"], "injuryStatus": teamMapping[team1][player]["injuryStatus"]}
                 team1Slots[str(slot)].append(tempList)
@@ -158,24 +170,28 @@ def teamCombos(team1, team2):
             for slot in teamMapping[team1][player]["eligibleSlots"]:
                 tempList = {"name": teamMapping[team1][player]["name"], "stats": teamMapping[team1][player]["stats"], "injuryStatus": teamMapping[team1][player]["injuryStatus"]}
                 team1Slots[str(slot)].append(tempList)
-        
-    combinations = list(itertools.product(team1Slots["0"],team1Slots["1"],team1Slots["2"],team1Slots["3"],
-                        team1Slots["4"],team1Slots["5"],team1Slots["6"],team1Slots["7"],team1Slots["8"],team1Slots["9"],
-                        team1Slots["10"],team1Slots["11"],team1Slots["12"],team1Slots["13"]))
-    print(combinations)
 
-    # for slot in team1Slots:
-    #     for sloty in team1Slots[slot]:
-    #         print(slot, " = ", sloty["name"])
+    combinations = sort_and_deduplicate(list(itertools.product(team1Slots["0"],team1Slots["1"] ,team1Slots["2"],team1Slots["3"],
+                         team1Slots["4"],team1Slots["5"],team1Slots["6"],team1Slots["7"],team1Slots["8"],team1Slots["9"],
+                         team1Slots["10"],team1Slots["11"],team1Slots["12"],team1Slots["13"])))
+    #combinationSet = set(list(combinations))
+    counter=0
+    usedPlayers=[]
+    finalCombos = []
+    for combo in combinations:
+        counter=0
+        usedPlayers.clear()
+        for playerNameSet in combo:
+            if(playerNameSet["name"] not in usedPlayers):
+                counter+=1
+                #print(combo, "\n")
+                usedPlayers.append(playerNameSet["name"])
+        if (counter == 8):
+            #print("counter = ", counter, " ", combo, "\n")
+            finalCombos.append(combo)
+    print(len(finalCombos))
 
-        # a = [1,2,3]
-        # b = [4,5]
-        # c = [-1]
-        # # result contains all possible combinations.
-        # combinations = list(itertools.product(a,b,c))
-    
-    # for stat in playerMapping["Kyrie Irving"]["stats"]:
-    #     print(stat, "\n")
+
 
 #This is the main function that understands user input.
 def parseInput(inputVal):
@@ -196,10 +212,10 @@ def parseInput(inputVal):
         print("\ncomputing H2H matchup\n")
         teamCombos(team1, team2)
     elif inputVal == 4:
-        
-        print("computing Trade matchup")   
-#League starts week 52 of 2020
+        print("computing Trade matchup")  
 
+ 
+#League starts week 52 of 2020
 with open(r"C:\Users\Henok Addis\Documents\espn_auth.json") as f:
   espnAuth = json.load(f) 
 
