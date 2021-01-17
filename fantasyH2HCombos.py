@@ -78,6 +78,8 @@ def parseSchedule():
 # This function goes through each Fantasy team and builds team:roster mappings & a general player Dictionary
 # output = teamMapping
 def parseTeams():
+    fixedPlayers = ["Giannis Antetokounmpo", "Bradley Beal", "Steven Adams","Domantas Sabonis"]
+    fixedStats = {"Giannis Antetokounmpo": 3, "Bradley Beal":1, "Steven Adams":7, "Domantas Sabonis":4}
     for team in fantasyData_leagueTeams:
         tempTeam = {}
         for player in team["roster"]["entries"]:
@@ -87,13 +89,22 @@ def parseTeams():
             #tempPlayer["eligibleSlots"] = player["playerPoolEntry"]["player"]["eligibleSlots"]
             tempSlots = []
             guaranteedSlots = [7,8,9,10,11,12,13]
+            starterGuaranteedSlots = [7,8,9]
             for slot in player["playerPoolEntry"]["player"]["eligibleSlots"]:
                 if slot < 7:
-                    tempSlots.append(slot)
+                    if(player["playerPoolEntry"]["player"]["fullName"] in fixedPlayers):
+                        if(fixedStats[player["playerPoolEntry"]["player"]["fullName"]] == slot):
+                            tempSlots.append(slot)
+                    elif(slot not in fixedStats.values()):
+                        tempSlots.append(slot)
                 else:
-                    for item in guaranteedSlots:
-                        tempSlots.append(item)
                     break
+            if(player["playerPoolEntry"]["player"]["fullName"] in fixedPlayers):
+                 for item in starterGuaranteedSlots:
+                        tempSlots.append(item)
+            else:
+                for item in guaranteedSlots:
+                        tempSlots.append(item)
             tempPlayer["eligibleSlots"] = tempSlots
             tempPlayer["injured"] = player["playerPoolEntry"]["player"]["injured"]
             tempPlayer["injuryStatus"] = player["playerPoolEntry"]["player"]["injuryStatus"]
@@ -171,9 +182,9 @@ def teamCombos(team1, team2):
                 tempList = {"name": teamMapping[team1][player]["name"], "stats": teamMapping[team1][player]["stats"], "injuryStatus": teamMapping[team1][player]["injuryStatus"]}
                 team1Slots[str(slot)].append(tempList)
 
-    combinations = sort_and_deduplicate(list(itertools.product(team1Slots["0"],team1Slots["1"] ,team1Slots["2"],team1Slots["3"],
+    combinations = list(itertools.product(team1Slots["0"],team1Slots["1"] ,team1Slots["2"],team1Slots["3"],
                          team1Slots["4"],team1Slots["5"],team1Slots["6"],team1Slots["7"],team1Slots["8"],team1Slots["9"],
-                         team1Slots["10"],team1Slots["11"],team1Slots["12"],team1Slots["13"])))
+                         team1Slots["10"],team1Slots["11"],team1Slots["12"],team1Slots["13"]))
     #combinationSet = set(list(combinations))
     counter=0
     usedPlayers=[]
@@ -216,7 +227,7 @@ def parseInput(inputVal):
 
  
 #League starts week 52 of 2020
-with open(r"C:\Users\Henok Addis\Documents\espn_auth.json") as f:
+with open(r"C:\Users\headdis\Downloads\espn_auth.json") as f:
   espnAuth = json.load(f) 
 
 fantasyData = getAPIResponse()
@@ -225,7 +236,7 @@ leagueSchedule = fantasyData["schedule"]
 #with open(r"C:\Users\Henok Addis\Code\espnfantasybball\nbatestjson.json") as f:
 #  fantasyData = json.load(f)
 
-with open(r"C:\Users\Henok Addis\Code\espnfantasybball\nbaschedule.json") as f:
+with open(r"C:\Users\headdis\Code\espnfantasybball\nbaschedule.json") as f:
   scheduleData = json.load(f)
 
 lockedRoster = ["Giannis Antetokounmpo", "Bradley Beal", "Domantas Sabonis", "Steven Adams"]
